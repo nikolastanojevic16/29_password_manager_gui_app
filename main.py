@@ -57,6 +57,25 @@ def save():
             p_entry.delete(0, END)
 
 
+# ---------------------------- FIND PASSWORD ----------------------------#
+def find_password():
+    searched_website = w_entry.get()
+    try:
+        with open("data.json", mode="r") as data_file:
+            data = json.load(data_file)
+    except FileNotFoundError:
+        messagebox.showinfo(title="Oops", message="No data file found")
+    else:
+        if searched_website in data:
+            searched_email = data[searched_website]["email"]
+            searched_password = data[searched_website]["password"]
+            messagebox.showinfo(title="Credentials", message=f"For {searched_website} website:\n"
+                                                             f"email: {searched_email}\n"
+                                                             f"password: {searched_password}")
+        else:
+            messagebox.showinfo(title="Oops", message="No data found for searched website.")
+
+
 # ---------------------------- UI SETUP ------------------------------- #
 
 window = Tk()
@@ -81,8 +100,8 @@ p_label.grid(column=0, row=3)
 
 
 # Entry
-w_entry = Entry(width=42)
-w_entry.grid(column=1, row=1, columnspan=2)
+w_entry = Entry(width=24)
+w_entry.grid(column=1, row=1)
 w_entry.focus()
 
 e_entry = Entry(width=42)
@@ -94,6 +113,9 @@ p_entry.grid(column=1, row=3)
 
 
 # Buttons
+search_button = Button(text="Search", width=14, command=find_password)
+search_button.grid(column=2, row=1)
+
 add_button = Button(text="Add", width=36, command=save)
 add_button.grid(column=1, row=4, columnspan=2)
 
